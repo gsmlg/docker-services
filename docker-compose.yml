@@ -1,4 +1,4 @@
-version: 3
+version: 2
 
 services:
   acme:
@@ -14,6 +14,22 @@ services:
       - "10808:80"
     volumes:
       - mirrors_data:/mirrors
+      - sites:/sites
+  squid:
+    image: "gsmlg/proxy:squid"
+  stunnel:
+    image: "gsmlg/proxy:stunnel"
+    ports:
+      - "13128:443"
+  nginx:
+    image: "gsmlg/proxy:nginx"
+    volumes:
+      - sites:/sites
+      - certs:/etc/certs
+    ports:
+      - 443
+      - 80
 
 volumes:
   certs: {}
+  sites: {}
