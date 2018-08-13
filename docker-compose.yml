@@ -3,6 +3,7 @@ version: "2"
 services:
   acme:
     image: "gsmlg/acme:latest"
+    restart: unless-stopped
     environment:
       - CF_Email=gsmlg.com@gmail.com
       - CF_Key
@@ -10,27 +11,33 @@ services:
       - certs:/certs
   mirrors:
     image: "gsmlg/mirrors.gsmlg.org:latest"
-    ports:
-      - "10808:80"
+    restart: unless-stopped
+    environment:
+      - NAME=mirrors
     volumes:
       - mirrors_data:/mirrors
       - sites:/sites
   squid:
     image: "gsmlg/proxy:squid"
+    restart: unless-stopped
   stunnel:
     image: "gsmlg/proxy:stunnel"
+    restart: unless-stopped
     ports:
       - "13128:443"
   nginx:
     image: "gsmlg/proxy:nginx"
+    restart: unless-stopped
     volumes:
       - sites:/etc/nginx/sites
       - certs:/etc/certs
     ports:
-      - 443
-      - 80
+      - "443:443"
+      - "80:80"
 
 volumes:
   certs: {}
   sites: {}
   mirrors_data: {}
+
+
