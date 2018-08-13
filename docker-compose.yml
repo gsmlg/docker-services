@@ -1,4 +1,4 @@
-version: 2
+version: "2"
 
 services:
   acme:
@@ -24,7 +24,7 @@ services:
   nginx:
     image: "gsmlg/proxy:nginx"
     volumes:
-      - sites:/sites
+      - sites:/etc/nginx/sites
       - certs:/etc/certs
     ports:
       - 443
@@ -33,3 +33,4 @@ services:
 volumes:
   certs: {}
   sites: {}
+  mirrors_data: {}
