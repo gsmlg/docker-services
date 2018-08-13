@@ -1,0 +1,19 @@
+version: 3
+
+services:
+  acme:
+    image: "gsmlg/acme:latest"
+    environment:
+      - CF_Email=gsmlg.com@gmail.com
+      - CF_Key
+    volumes:
+      - certs:/certs
+  mirrors:
+    image: "gsmlg/mirrors.gsmlg.org:latest"
+    ports:
+      - "10808:80"
+    volumes:
+      - mirrors_data:/mirrors
+
+volumes:
+  certs: {}
