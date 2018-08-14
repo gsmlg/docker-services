@@ -14,6 +14,7 @@ services:
     restart: unless-stopped
     environment:
       - NAME=mirrors
+      - HOSTNAME=mirrors.gsmlg.org
     volumes:
       - mirrors_data:/mirrors
       - sites:/sites
@@ -22,6 +23,7 @@ services:
     restart: unless-stopped
     environment:
       - NAME=echo
+      - HOSTNAME=echo.gsmlg.org
     volumes:
       - sites:/sites
   squid:
@@ -37,6 +39,7 @@ services:
     restart: unless-stopped
     environment:
       - NAME=gsmlg_org
+      - HOSTNAME=www.gsmlg.org
     ports:
       - "4369:4369"
   nginx:
