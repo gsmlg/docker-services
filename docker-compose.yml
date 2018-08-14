@@ -17,6 +17,13 @@ services:
     volumes:
       - mirrors_data:/mirrors
       - sites:/sites
+  echo:
+    image: "gsmlg/echo:latest"
+    restart: unless-stopped
+    environment:
+      - NAME=echo
+    volumes:
+      - sites:/sites
   squid:
     image: "gsmlg/proxy:squid"
     restart: unless-stopped
@@ -25,12 +32,22 @@ services:
     restart: unless-stopped
     ports:
       - "13128:443"
+  gsmlg_org:
+    image: "gsmlg/gsmlg.org:latest"
+    restart: unless-stopped
+    environment:
+      - NAME=gsmlg_org
+    ports:
+      - "4369:4369"
   nginx:
     image: "gsmlg/proxy:nginx"
     restart: unless-stopped
     volumes:
+      - nginx_logs:/var/log/nginx
       - sites:/etc/nginx/sites
-      - certs:/etc/certs
+      - certs:/etc/certs:ro
+      - ./static.conf:/etc/nginx/conf.d/static.conf
+      - /var/www/static:/var/www/static
     ports:
       - "443:443"
       - "80:80"
@@ -39,5 +56,6 @@ volumes:
   certs: {}
   sites: {}
   mirrors_data: {}
+  nginx_logs: {}
 
 
