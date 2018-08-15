@@ -67,6 +67,7 @@ services:
       - nginx_logs:/var/log/nginx
       - sites:/etc/nginx/sites
       - certs:/etc/certs:ro
+      - ./ssl.conf:/etc/nginx/ssl.conf
       - ./static.conf:/etc/nginx/conf.d/static.conf
       - /var/www/static:/var/www/static
     ports:
