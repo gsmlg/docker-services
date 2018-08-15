@@ -38,8 +38,12 @@ services:
     image: "gsmlg/gsmlg.org:latest"
     restart: unless-stopped
     environment:
+      - PORT=80
       - NAME=gsmlg_org
-      - HOSTNAME=www.gsmlg.org
+      - NODE_NAME
+      - ERLCOOKIE
+    volumes:
+      - sites:/sites
     ports:
       - "4369:4369"
   nginx:
