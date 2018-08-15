@@ -38,9 +38,11 @@ services:
     image: "gsmlg/proxy:stunnel"
     restart: unless-stopped
     environment:
-      - SERVER_MODE
+      - PROXY_MODE
+      - PROXY_SERVER
     ports:
       - "13128:443"
+      - "3128:80"
   gsmlg_org:
     image: "gsmlg/gsmlg.org:latest"
     restart: unless-stopped
