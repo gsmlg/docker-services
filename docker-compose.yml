@@ -31,6 +31,8 @@ services:
   squid:
     image: "gsmlg/proxy:squid"
     restart: unless-stopped
+    environment:
+      - SQUID_WAIT=10
     volumes:
       - squid_logs:/var/log/squid
       - squid_cache:/var/cache/squid
