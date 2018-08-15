@@ -14,7 +14,9 @@ services:
     restart: unless-stopped
     environment:
       - NAME=mirrors
-      - HOSTNAME=mirrors.gsmlg.org
+      - SERVER_NAME="mirrors.gsmlg.org"
+      - SERVER_MODE
+      - MASTER_URL
     volumes:
       - mirrors_data:/mirrors
       - sites:/sites
@@ -29,9 +31,14 @@ services:
   squid:
     image: "gsmlg/proxy:squid"
     restart: unless-stopped
+    volumes:
+      - squid_logs:/var/log/squid
+      - squid_cache:/var/cache/squid
   stunnel:
     image: "gsmlg/proxy:stunnel"
     restart: unless-stopped
+    environment:
+      - SERVER_MODE
     ports:
       - "13128:443"
   gsmlg_org:
@@ -39,7 +46,7 @@ services:
     restart: unless-stopped
     environment:
       - NAME=gsmlg_org
-      - HOSTNAME=www.gsmlg.org
+      - SERVER_NAME="www.gsmlg.org gsmlg.org"
     ports:
       - "4369:4369"
   nginx:
@@ -60,5 +67,6 @@ volumes:
   sites: {}
   mirrors_data: {}
   nginx_logs: {}
-
+  squid_logs: {}
+  squid_cache: {}
 
