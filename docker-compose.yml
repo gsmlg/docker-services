@@ -42,6 +42,8 @@ services:
     environment:
       - PROXY_MODE
       - PROXY_SERVER
+    volumes:
+      - certs:/etc/certs:ro
     ports:
       - "13128:443"
       - "3128:80"
