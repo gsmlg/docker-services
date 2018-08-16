@@ -10,7 +10,7 @@ services:
     volumes:
       - certs:/certs
   mirrors:
-    image: "gsmlg/mirrors.gsmlg.org:latest"
+    image: "gsmlg/mirrors:latest"
     restart: unless-stopped
     environment:
       - NAME=mirrors
