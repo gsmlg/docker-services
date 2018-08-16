@@ -1,4 +1,4 @@
-version: "2"
+version: "3"
 
 services:
   acme:
@@ -14,9 +14,9 @@ services:
     restart: unless-stopped
     environment:
       - NAME=mirrors
-      - SERVER_NAME="mirrors.gsmlg.org"
-      - SERVER_MODE
-      - MASTER_URL
+      - SERVER_NAME=${MIRROR_SERVER_NAME}
+      - SERVER_MODE=${MIRROR_MODE}
+      - MASTER_URL=${MIRROR_MASTER_SERVER}
     volumes:
       - mirrors_data:/mirrors
       - sites:/sites
@@ -25,13 +25,14 @@ services:
     restart: unless-stopped
     environment:
       - NAME=echo
-      - HOSTNAME=echo.gsmlg.org
+      - SERVER_NAME=echo.gsmlg.org
     volumes:
       - sites:/sites
   squid:
     image: "gsmlg/proxy:squid"
     restart: unless-stopped
     environment:
+      - PROXY_MODE
       - SQUID_WAIT=10
     volumes:
       - squid_logs:/var/log/squid
