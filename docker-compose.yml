@@ -50,9 +50,10 @@ services:
       - "3128:80"
   gsmlg_org:
     image: "gsmlg/gsmlg.org:latest"
-    restart: unless-stopped
+    restart: none
     environment:
       - PORT=80
+      - ERL_EPMD_PORT=4369
       - NAME=gsmlg_org
       - SERVER_NAME="www.gsmlg.org gsmlg.org"
       - NODE_NAME
@@ -61,6 +62,7 @@ services:
       - sites:/sites
     ports:
       - "4369:4369"
+      - "4370:4370"
   nginx:
     image: "gsmlg/proxy:nginx"
     restart: unless-stopped
