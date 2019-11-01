@@ -1,35 +1,8 @@
 version: "3"
 
 services:
-  acme:
-    image: "gsmlg/acme:latest"
-    restart: unless-stopped
-    environment:
-      - CF_Email=gsmlg.com@gmail.com
-      - CF_Key
-    volumes:
-      - certs:/certs
-  mirrors:
-    image: "gsmlg/mirrors:latest"
-    restart: unless-stopped
-    environment:
-      - NAME=mirrors
-      - SERVER_NAME=${MIRROR_SERVER_NAME}
-      - SERVER_MODE=${MIRROR_MODE}
-      - MASTER_URL=${MIRROR_MASTER_SERVER}
-    volumes:
-      - mirrors_data:/mirrors
-      - sites:/sites
-  echo:
-    image: "gsmlg/echo:latest"
-    restart: unless-stopped
-    environment:
-      - NAME=echo
-      - SERVER_NAME=echo.gsmlg.org
-    volumes:
-      - sites:/sites
   squid:
-    image: "gsmlg/proxy:squid"
+    image: docker.io/gsmlg/proxy:squid
     restart: unless-stopped
     environment:
       - PROXY_MODE
@@ -38,50 +11,16 @@ services:
       - squid_logs:/var/log/squid
       - squid_cache:/var/cache/squid
   stunnel:
-    image: "gsmlg/proxy:stunnel"
+    image: docker.io/gsmlg/proxy:stunnel
     restart: unless-stopped
     environment:
       - PROXY_MODE
       - PROXY_SERVER
-    volumes:
-      - certs:/etc/certs:ro
     ports:
       - "13128:443"
       - "3128:80"
-  gsmlg_org:
-    image: "gsmlg/gsmlg.org:latest"
-    restart: unless-stopped
-    environment:
-      - PORT=80
-      - ERL_EPMD_PORT=4369
-      - NAME=gsmlg_org
-      - SERVER_NAME="www.gsmlg.org gsmlg.org"
-      - NODE_NAME
-      - ERLCOOKIE
-    volumes:
-      - sites:/sites
-    ports:
-      - "4369:4369"
-      - "4370:4370"
-  nginx:
-    image: "gsmlg/proxy:nginx"
-    restart: unless-stopped
-    volumes:
-      - nginx_logs:/var/log/nginx
-      - sites:/etc/nginx/sites
-      - certs:/etc/certs:ro
-      - ./ssl.conf:/etc/nginx/ssl.conf
-      - ./static.conf:/etc/nginx/conf.d/static.conf
-      - /var/www/static:/var/www/static
-    ports:
-      - "443:443"
-      - "80:80"
 
 volumes:
-  certs: {}
-  sites: {}
-  mirrors_data: {}
-  nginx_logs: {}
   squid_logs: {}
   squid_cache: {}
 
